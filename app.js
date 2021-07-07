@@ -74,11 +74,19 @@ imagesContainer.insertAdjacentHTML("beforeend", imagesMarkup);
 imagesContainer.addEventListener("click", onClickContainer);
 
 function onClickContainer(evt) {
-  if (!evt.target.classList.contains(".gallery__image")) {
+  event.preventDefault();
+
+  if (evt.target.classList.contains(".gallery__link")) {
+    console.log("Кликнул на ссылку");
     return;
+  } else {
+    console.log("Слушатель работает");
+    console.log(evt.target.dataset.source);
   }
-  console.log(evt.target.dataset.source);
 }
+// console.log("Кликнул на ссылку");
+// console.log(evt.target.dataset.$({ original }));
+// }
 
 function creatGalleryImage(images) {
   return images
