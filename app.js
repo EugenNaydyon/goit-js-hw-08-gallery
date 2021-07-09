@@ -64,29 +64,7 @@ const galleryItems = [
   },
 ];
 
-const imagesContainer = document.querySelector(".js-gallery");
-const imagesMarkup = creatGalleryImage(galleryItems);
-
-imagesContainer.insertAdjacentHTML("beforeend", imagesMarkup);
-
-// console.log(creatGalleryImage(galleryItems));
-
-imagesContainer.addEventListener("click", onClickContainer);
-
-function onClickContainer(evt) {
-  event.preventDefault();
-
-  if (evt.target.classList.contains(".gallery__link")) {
-    console.log("Кликнул на ссылку");
-    return;
-  } else {
-    console.log("Слушатель работает");
-    console.log(evt.target.dataset.source);
-  }
-}
-// console.log("Кликнул на ссылку");
-// console.log(evt.target.dataset.$({ original }));
-// }
+// === creating the gallery ===
 
 function creatGalleryImage(images) {
   return images
@@ -108,19 +86,53 @@ function creatGalleryImage(images) {
     `;
     })
     .join("");
-  // console.log(markup);
 }
 
-/* <li class="gallery__item">
-  <a
-    class="gallery__link"
-    href="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
-  >
-    <img
-      class="gallery__image"
-      src="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546__340.jpg"
-      data-source="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
-      alt="Tulips"
-    />
-  </a>
-</li>; */
+// === open modal window ===
+
+const imagesContainer = document.querySelector(".js-gallery");
+const imagesMarkup = creatGalleryImage(galleryItems);
+
+imagesContainer.insertAdjacentHTML("beforeend", imagesMarkup);
+
+const openModal = document.querySelector(".lightbox");
+
+imagesContainer.addEventListener("click", onClickContainer);
+
+function onClickContainer(evt) {
+  evt.preventDefault();
+
+  if (evt.target.classList.contains("gallery__image")) {
+    openModal.classList.add("is-open");
+    document.querySelector(".lightbox__image").src = evt.target.dataset.source;
+  }
+}
+
+// === close modal window ===
+
+// const closeModalCrossBtn = document.querySelector("button");
+// closeModalCrossBtn.addEventListener("click", clsModal);
+
+document.querySelector("button").addEventListener("click", clsModal);
+
+function clsModal(evt) {
+  openModal.classList.toggle("is-open");
+
+  document.querySelector(".lightbox__image").src = "";
+}
+
+// const closeModalOverlay = document.querySelector(".lightbox__overlay");
+// closeModalOverlay.addEventListener("click", clsModal);
+
+document
+  .querySelector(".lightbox__overlay")
+  .addEventListener("click", clsModal);
+
+window.addEventListener("keydown", clsModalByEsc);
+
+function clsModalByEsc(event) {
+  if (event.code === "Escape") {
+    openModal.classList.toggle("is-open");
+    document.querySelector(".lightbox__image").src = "";
+  }
+}
